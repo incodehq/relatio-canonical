@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <groupId>org.incode</groupId>
+        <artifactId>incode-parent</artifactId>
+        <version>1.16.2.20180707-1320-eca4c55a</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.incode.eurocommercial</groupId>
+    <artifactId>relatio-canonical</artifactId>
+    <version>${revision}</version>
+    <name>RELATIO CRM Canonical DTOs</name>
+
+    <description>
+        This module defines a set of DTOs that represent a stable API for extracting information from an instance of relatio.
+    </description>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>marcusvb</id>
+            <name>Marcus van Bergen</name>
+            <email>marcus.vanbergen@ecpnv.com</email>
+        </developer>
+    </developers>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>buildnumber-maven-plugin</artifactId>
+                    <version>1.2</version>
+                    <configuration>
+                        <shortRevisionLength>8</shortRevisionLength>
+                        <timestampFormat>{0,date,yyyy-MM-dd HH:mm:ss}</timestampFormat>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>com.github.odavid.maven.plugins</groupId>
+                <artifactId>mixin-maven-plugin</artifactId>
+                <version>0.1-alpha-39</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <mixins>
+                        <mixin>
+                            <groupId>com.danhaywood.mavenmixin</groupId>
+                            <artifactId>enforcerrelaxed</artifactId>
+                        </mixin>
+                        <mixin>
+                            <groupId>com.danhaywood.mavenmixin</groupId>
+                            <artifactId>standard</artifactId>
+                        </mixin>
+                        <mixin>
+                            <groupId>com.danhaywood.mavenmixin</groupId>
+                            <artifactId>sourceandjavadoc</artifactId>
+                        </mixin>
+                    </mixins>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                        <configuration>
+                            <updatePomFile>true</updatePomFile>
+                            <pomElements>
+                                <parent>resolve</parent>
+                                <name>resolve</name>
+                                <description>resolve</description>
+                                <url>resolve</url>
+                                <scm>resolve</scm>
+                                <developers>resolve</developers>
+                                <properties>resolve</properties>
+                                <build>resolve</build>
+                                <dependencyManagement>resolve</dependencyManagement>
+                                <dependencies>resolve</dependencies>
+                                <profiles>resolve</profiles>
+                            </pomElements>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <properties>
+        <revision>1.16.2-SNAPSHOT</revision>
+
+        <isis.version>1.16.2.20180705-2207-210fd1e3</isis.version>
+        <incode-platform.version>1.16.2.20180704-2126-e962fc24</incode-platform.version>
+
+        <javafaker.version>0.5</javafaker.version>
+        <lombok.version>1.18.0</lombok.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.isis.core</groupId>
+            <artifactId>isis-core-schema</artifactId>
+            <version>${isis.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <profiles>
+
+        <profile>
+            <id>xsd-to-java</id>
+            <activation>
+                <property>
+                    <name>!skip.xsd-to-java</name>
+                </property>
+            </activation>
+
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb2.maven2</groupId>
+                            <artifactId>maven-jaxb2-plugin</artifactId>
+                            <version>0.13.3</version>
+                            <configuration>
+                                <removeOldOutput>true</removeOldOutput>
+                                <episode>true</episode>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jvnet.jaxb2.maven2</groupId>
+                        <artifactId>maven-jaxb2-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-jaxb-classes</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <schemaDirectory>src/main/resources/org/incode/eurocommercial/relatio/canonical</schemaDirectory>
+                                    <schemaIncludes>
+                                        <schemaInclude>user/v1/user-1.0.xsd</schemaInclude>
+                                        <schemaInclude>center/v1/center-1.0.xsd</schemaInclude>
+                                    </schemaIncludes>
+                                    <bindingDirectory>src/main/resources/org/incode/eurocommercial/relatio/canonical</bindingDirectory>
+                                    <bindingIncludes>
+                                        <bindingInclude>bindings.xml</bindingInclude>
+                                        <!--
+                                        this prevents xjc from generating classes for the imported common.xsd
+                                        -->
+                                        <bindingInclude>isis-schema.sun-jaxb.episode.xml</bindingInclude>
+                                    </bindingIncludes>
+                                    <extension>true</extension>
+                                    <args>
+                                        <arg>-extension</arg>
+                                        <arg>-Xnamespace-prefix</arg>
+                                        <arg>-no-header</arg>
+                                        <arg>-Xxew</arg>
+                                        <arg>-Xxew:instantiate lazy</arg>
+                                    </args>
+                                    <plugins>
+                                        <plugin>
+                                            <groupId>com.github.jaxb-xew-plugin</groupId>
+                                            <artifactId>jaxb-xew-plugin</artifactId>
+                                            <version>1.7</version>
+                                        </plugin>
+                                    </plugins>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.jvnet.jaxb2_commons</groupId>
+                                <artifactId>jaxb2-namespace-prefix</artifactId>
+                                <version>1.3</version>
+                            </dependency>
+                        </dependencies>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>build-helper-maven-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>add-source</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>add-source</goal>
+                                </goals>
+                                <configuration>
+                                    <sources>
+                                        <source>target/generated-sources/xjc</source>
+                                    </sources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <id>danhaywood-mavenmixin-sonatyperelease</id>
+            <!--
+            this profile is required in order to release this module to Maven Central repo
+            -->
+            <build>
+                <plugins>
+                    <!-- http://central.sonatype.org/pages/apache-maven.html -->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.2</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!-- http://kohsuke.org/pgp-maven-plugin/secretkey.html instead of maven-gpg-plugin -->
+                    <plugin>
+                        <groupId>org.kohsuke</groupId>
+                        <artifactId>pgp-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+
+
+        <!-- TODO: move up to incode-build -->
+        <profile>
+            <id>incode-cloud-maven</id>
+            <activation>
+                <property>
+                    <name>!skip.incode-cloud-maven</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>incode-cloud-maven</id>
+                    <url>https://repo.incode.cloud/repository/maven/</url>
+                    <name>Incode Cloud (maven)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>incode-cloud-maven</id>
+                    <name>Incode Cloud (maven)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <url>https://repo.incode.cloud/repository/maven/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <!-- TODO: move up to incode-build -->
+        <profile>
+            <id>incode-cloud-maven-dev</id>
+            <activation>
+                <property>
+                    <name>incode-cloud-maven-dev</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>incode-cloud-maven-dev</id>
+                    <url>https://repo.incode.cloud/repository/maven-dev/</url>
+                    <name>Incode Cloud (maven-dev)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>incode-cloud-maven-dev</id>
+                    <name>Incode Cloud (maven-dev)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <url>https://repo.incode.cloud/repository/maven-dev/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <!-- TODO: move up to incode-build -->
+        <profile>
+            <id>incode-cloud-maven-test</id>
+            <activation>
+                <property>
+                    <name>incode-cloud-maven-test</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>incode-cloud-maven-test</id>
+                    <url>https://repo.incode.cloud/repository/maven-test/</url>
+                    <name>Incode Cloud (maven-test)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>incode-cloud-maven-test</id>
+                    <name>Incode Cloud (maven-test)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <url>https://repo.incode.cloud/repository/maven-test/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <!-- TODO: move up to incode-build -->
+        <profile>
+            <id>incode-cloud-maven-prod</id>
+            <activation>
+                <property>
+                    <name>incode-cloud-maven-prod</name>
+                </property>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>incode-cloud-maven-prod</id>
+                    <url>https://repo.incode.cloud/repository/maven-prod/</url>
+                    <name>Incode Cloud (maven-prod)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                        <updatePolicy>always</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </snapshots>
+                    <layout>default</layout>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>incode-cloud-maven-prod</id>
+                    <name>Incode Cloud (maven-prod)</name>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>never</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                    <url>https://repo.incode.cloud/repository/maven-prod/</url>
+                    <layout>default</layout>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+
+        <!-- TODO: move up to incode-build -->
+        <profile>
+            <id>nexus-deploy</id>
+            <activation>
+                <property>
+                    <name>nexus-deploy</name>
+                </property>
+            </activation>
+            <properties>
+                <nexus-deploy.repositoryUrl>http://localhost:8081/repository/builds</nexus-deploy.repositoryUrl>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>nexus-deploy.serverId</serverId>
+                            <skipStaging>true</skipStaging>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <repository>
+                    <id>nexus-deploy.serverId</id>
+                    <url>${nexus-deploy.repositoryUrl}</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
+</project>
