@@ -179,8 +179,7 @@
                                 <configuration>
                                     <schemaDirectory>src/main/resources/org/incode/eurocommercial/relatio/canonical</schemaDirectory>
                                     <schemaIncludes>
-                                        <schemaInclude>user/v1/user-1.0.xsd</schemaInclude>
-                                        <schemaInclude>center/v1/center-1.0.xsd</schemaInclude>
+                                        <schemaInclude>profile/v1/profile-1.0.xsd</schemaInclude>
                                     </schemaIncludes>
                                     <bindingDirectory>src/main/resources/org/incode/eurocommercial/relatio/canonical</bindingDirectory>
                                     <bindingIncludes>
