@@ -356,6 +356,26 @@
                 </repository>
             </distributionManagement>
         </profile>
+
+        <!-- TODO: move up to incode-build ? -->
+        <profile>
+            <id>gcpappenginerepo-deploy</id>
+            <activation>
+                <property>
+                    <name>gcpappenginerepo-deploy</name>
+                </property>
+            </activation>
+            <properties>
+                <gcpappenginerepo-deploy.repositoryUrl>https://my-gcp-project-id.appspot.com</gcpappenginerepo-deploy.repositoryUrl>
+            </properties>
+            <distributionManagement>
+                <repository>
+                    <id>gcpappenginerepo-deploy.serverId</id>
+                    <url>${gcpappenginerepo-deploy.repositoryUrl}</url>
+                </repository>
+            </distributionManagement>
+        </profile>
     </profiles>
+
 
 </project>
