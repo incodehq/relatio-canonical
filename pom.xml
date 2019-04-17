@@ -324,39 +324,6 @@
             </pluginRepositories>
         </profile>
 
-        <!-- TODO: move up to incode-build -->
-        <profile>
-            <id>nexus-deploy</id>
-            <activation>
-                <property>
-                    <name>nexus-deploy</name>
-                </property>
-            </activation>
-            <properties>
-                <nexus-deploy.repositoryUrl>http://localhost:8081/repository/builds</nexus-deploy.repositoryUrl>
-            </properties>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>nexus-deploy.serverId</serverId>
-                            <skipStaging>true</skipStaging>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <repository>
-                    <id>nexus-deploy.serverId</id>
-                    <url>${nexus-deploy.repositoryUrl}</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-
         <!-- TODO: move up to incode-build ? -->
         <profile>
             <id>gcpappenginerepo-deploy</id>
