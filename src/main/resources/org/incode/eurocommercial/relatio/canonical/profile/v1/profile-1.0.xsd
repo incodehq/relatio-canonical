@@ -56,6 +56,8 @@
             <xs:element name="facebookAccount" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="privacyConsent" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
             <xs:element name="marketingConsent" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="thirdPartyConsent" type="xs:boolean" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="postalCode" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="emailAccount" type="xs:string" minOccurs="1" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
